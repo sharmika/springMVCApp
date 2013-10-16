@@ -1,0 +1,38 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.2.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+	<!-- TO SCAN ALL PACKAGES -->
+	<context:component-scan base-package="com.tech.rest.*" />
+	
+	<!-- CONFIGURATION OF PROPERTIES FILE -->
+	<context:property-placeholder location="classpath:database.properties" />
+	
+	<!-- TO SCAN JSPS -->
+	<bean id="jspViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		p:prefix="/WEB-INF/jsps/" p:suffix=".jsp" />
+		
+	<!-- DATASOURCE CONFIGURATION  -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="minPoolSize" value="${jdbc.minPoolSize}"/>
+		<property name="maxPoolSize" value="${jdbc.maxPoolSize}"/>
+		<property name="maxIdleTime" value="${jdbc.maxIdleTime}"/>		
+	</bean>
+	
+	<!-- DAO MAPPING -->
+	<bean id="studentDao" class="com.tech.rest.dao.StudentDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+</beans>
